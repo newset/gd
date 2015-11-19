@@ -17,8 +17,8 @@ Route::get('/', function () {
 
 /* view route */
 Route::get('_/{page?}', 'CookController@page')->where('page', '(.*)');
-Route::post('q/{ctl}/{action}/{params?}')->where('params', '(.*)');
+Route::post('q/{ctl}/{action}/{params?}', 'CookController@cook')->where('params', '(.*)');
 
-if (debug()) {
-	Route::get('q/{ctrl}/{action}/{params?}')->where('params', '(.*)');
+if (is_debug()) {
+	Route::get('q/{ctrl}/{action}/{params?}', 'CookController@cook')->where('params', '(.*)');
 }
