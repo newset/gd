@@ -23,35 +23,6 @@ class CookController extends Controller
         $this->permission_api_set = config('permission');
     }
 
-    /**
-     * 主方法
-     * @param  [type] $p1 用户类型
-     * @param  [type] $p2 model名
-     * @return [type]     [description]
-     */
-    public function leader($p1 = null, $p2 = null, $p3 = null)
-    {
-        if (empty($p1)) return ee(2);
-
-        $ins_name = $p1;
-        $action_name = $p2;
-
-        if ( ! $this->has_permission($ins_name, $action_name)) abort(403, d(403));
-
-        // If exists model in univ, use it.
-        if (class_exists(MName($ins_name, 'v')) && !rq('write_data'))
-        {
-            $ins = M($ins_name, 'v');
-        }
-        else if (class_exists(MName($ins_name, 'i')))
-        {
-            $ins = M($ins_name, 'i');
-        }
-        else return ee(2, 'ins_not_exists'.MName($ins_name, 'i'));
-
-        return $ins->$action_name();
-    }
-
     public function lastId($p1 = null, $p2=null)
     {
         if (!$p1) {
@@ -96,24 +67,31 @@ class CookController extends Controller
         
     }
 
-    public function cook($ctrl, $action, $params)
+    /**
+     * 请求
+     * @param  [type] $ctrl   [description]
+     * @param  [type] $action [description]
+     * @param  string $params [description]
+     * @return [type]         [description]
+     */
+    public function cook($ctrl, $action, $params = '')
     {
+        // If exists model in univ, use it.
+        if (class_exists(MName($ctrl, 'v')) && !rq('write_data'))
+        {
+            $ins = new M($ctrl, 'v');
+        }
+        else if (class_exists(MName($ctrl, 'i')))
+        {
+            $ins = M($ctrl, 'i');
+        } else {
+            return ee(2);
+        }
+
         // 权限检查
-        
-        // 方法调用
-        
+
+        // 方法调用 是否存在
+        return call_user_func_array([$ins, $action], explode('/', $params));
     }
-    
-    public function report($p1 = null)
-    {
-        if (!$p1) {
-            abort(404);
-        }
-        $file = app_path() . '/Report/'.$p1.'.php';
-        if (file_exists($file)) {
-            include_once($file);
-        }else{
-            abort(404);
-        }
-    }
+
 }

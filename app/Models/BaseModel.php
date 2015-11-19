@@ -26,7 +26,7 @@ class BaseModel extends Model
         'unique' => '该值已存在.',
     ];
 
-    public function __construct($prefix = '')
+    public function __construct($prefix = 'i')
     {
         $this->table = table_name($this->ins_name, $prefix);
     }
