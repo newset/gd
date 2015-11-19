@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use View;
 
 class CookController extends Controller
 {
@@ -78,6 +79,29 @@ class CookController extends Controller
                 return true;
             }
         }
+    }
+
+    /**
+     * page method
+     * @return [type] [description]
+     */
+    public function page($page = '')
+    {   
+        $exist = View::exists($page);
+        if ($exist) {
+            return view($page);
+        }else{
+            abort(404);
+        }
+        
+    }
+
+    public function cook($ctrl, $action, $params)
+    {
+        // 权限检查
+        
+        // 方法调用
+        
     }
     
     public function report($p1 = null)

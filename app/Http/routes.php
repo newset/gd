@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+/* view route */
+Route::get('_/{page?}', 'CookController@page')->where('page', '(.*)');
+Route::post('q/{ctl}/{action}/{params?}')->where('params', '(.*)');
+
+if (debug()) {
+	Route::get('q/{ctrl}/{action}/{params?}')->where('params', '(.*)');
+}
