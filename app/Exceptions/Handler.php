@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-
+use BadMethodCallException;
 
 class Handler extends ExceptionHandler
 {
@@ -52,7 +52,7 @@ class Handler extends ExceptionHandler
             return response()->view('errors/404');
         }
 
-        if ($e instanceof FatalErrorException) {
+        if (($e instanceof FatalErrorException || $e instanceof BadMethodCallException) && !is_debug()) {
             return response()->view('errors/503');
         }
 

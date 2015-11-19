@@ -90,7 +90,8 @@ class CookController extends Controller
 
         // 权限检查
 
-        // 方法调用 是否存在
+        // 方法调用 是否存在 check guard
+
         return call_user_func_array([$ins, $action], explode('/', $params));
     }
 
